@@ -11,9 +11,9 @@ readline.on('line', async line => {
 	switch (line.trim()) {
 		case 'list vegan foods':
 			{
-				try {
-					const { data } = await axios.get(`http://localhost:3001/food`);
-					function* listVeganFoods () {
+				const { data } = await axios.get(`http://localhost:3001/food`);
+				function* listVeganFoods () {
+					try {
 						let idx = 0;
 						const veganOnly = data.filter(food =>
 							food.dietary_preferences.includes('vegan')
@@ -22,14 +22,14 @@ readline.on('line', async line => {
 							yield veganOnly[idx];
 							idx++;
 						}
+					} catch (error) {
+						console.log(`Can't list vegan foods at he moment!`, { error });
 					}
-					for (let val of listVeganFoods()) {
-						console.log(val.name);
-					}
-					readline.prompt();
-				} catch (error) {
-					console.log(error);
 				}
+				for (let val of listVeganFoods()) {
+					console.log(val.name);
+				}
+				readline.prompt();
 			}
 			break;
 		case 'log':
@@ -39,9 +39,13 @@ readline.on('line', async line => {
 				let actionIt;
 
 				function* actionGenerator () {
-					const food = yield;
-					const servingSize = yield askForServingSize();
-					yield displayCalories(servingSize, food);
+					try {
+						const food = yield;
+						const servingSize = yield askForServingSize();
+						yield displayCalories(servingSize, food);
+					} catch (error) {
+						console.log({ error });
+					}
 				}
 
 				function askForServingSize () {
@@ -50,6 +54,11 @@ readline.on('line', async line => {
 						servingSize => {
 							if (servingSize === 'nevermind' || servingSize === 'n') {
 								actionIt.return();
+							} else if (
+								typeof servingSize !== 'number' ||
+								servingSize === NaN
+							) {
+								actionIt.throw('Please, numbers only :-)');
 							} else {
 								actionIt.next(servingSize);
 							}
@@ -116,7 +125,11 @@ readline.on('line', async line => {
 				totalCalories = 0;
 
 				function* getFoodLog () {
-					yield* foodLog;
+					try {
+						yield* foodLog;
+					} catch (error) {
+						console.log('Failed to read food log!', { error });
+					}
 				}
 				const logIterator = getFoodLog();
 				for (const entry of logIterator) {
