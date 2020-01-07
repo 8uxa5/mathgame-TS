@@ -117,17 +117,38 @@
       "email": "sam@acme.com",
       "log": [
         {
-          "1572791640182": {
+          "1578418681590": {
             "food": "apple",
-            "servingSize": "2",
-            "calories": 176
+            "servingSize": "4",
+            "calories": 352
           }
         },
         {
-          "1578406066066": {
-            "food": "oreos",
+          "1578418692925": {
+            "food": "chicken breast",
             "servingSize": "3",
-            "calories": 690
+            "calories": 375
+          }
+        },
+        {
+          "1578419230288": {
+            "food": "oreos",
+            "servingSize": "30",
+            "calories": 6900
+          }
+        },
+        {
+          "1578419271173": {
+            "food": "broccoli",
+            "servingSize": "50",
+            "calories": 1500
+          }
+        },
+        {
+          "1578419290566": {
+            "food": "lentils",
+            "servingSize": "20",
+            "calories": 4600
           }
         }
       ]
